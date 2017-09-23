@@ -1,0 +1,7 @@
+# maven target directory
+/target/
+
+# eclipse junk
+/.project
+/.classpath
+/.settings

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<stella>
+  <version>1.0</version>
+  <drivercollection>
+    <driver>
+      <name>DB2 UDB</name>
+      <driverclass>COM.ibm.db2.jdbc.net.DB2Driver</driverclass>
+      <driverpath></driverpath>
+      <examplejdbcurl>jdbc:db2://&lt;host&gt;[:&lt;port-50000&gt;][/&lt;database&gt;]</examplejdbcurl>
+      <usebasic>true</usebasic>
+      <websiteurl>http://www-306.ibm.com/software/data/db2/udb/</websiteurl>
+    </driver>
+    <driver>
+      <name>MySQL</name>
+      <driverclass>com.mysql.jdbc.Driver</driverclass>
+      <driverpath></driverpath>
+      <examplejdbcurl>jdbc:mysql://&lt;host&gt;[:&lt;port-3306&gt;][/&lt;database&gt;]</examplejdbcurl>
+      <usebasic>true</usebasic>
+      <websiteurl>http://www.mysql.com/products/connector/j/</websiteurl>
+    </driver>
+    <driver>
+      <name>Oracle</name>
+      <driverclass>oracle.jdbc.driver.OracleDriver</driverclass>
+      <driverpath>drivers/Oracle9i9.2.0.8.jar</driverpath>
+      <examplejdbcurl>jdbc:oracle:thin:@&lt;host&gt;:&lt;port-1521&gt;:&lt;database SID&gt;</examplejdbcurl>
+      <usebasic>true</usebasic>
+      <websiteurl>http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html</websiteurl>
+    </driver>
+    <driver>
+      <name>PostgreSQL</name>
+      <driverclass>org.postgresql.Driver</driverclass>
+      <driverpath>drivers/postgresql-9.3-1102.jdbc41.jar</driverpath>
+      <examplejdbcurl>jdbc:postgresql://&lt;host&gt;[:&lt;port-5432&gt;][/&lt;database&gt;]</examplejdbcurl>
+      <usebasic>true</usebasic>
+      <websiteurl>http://jdbc.postgresql.org/</websiteurl>
+    </driver>
+    <driver>
+      <name>Microsoft SQL Server JTDS</name>
+      <driverclass>net.sourceforge.jtds.jdbc.Driver</driverclass>
+      <driverpath>drivers/jtds-1.2.jar</driverpath>
+      <examplejdbcurl>jdbc:jtds:sqlserver://&lt;host&gt;[:&lt;port-1433&gt;][/&lt;database&gt;]</examplejdbcurl>
+      <usebasic>true</usebasic>
+      <websiteurl>http://jtds.sourceforge.net/</websiteurl>
+    </driver>
+    <driver>
+      <name>Microsoft SQL Server</name>
+      <driverclass>com.microsoft.sqlserver.jdbc.SQLServerDriver</driverclass>
+      <driverpath>drivers/sqljdbc.jar</driverpath>
+      <examplejdbcurl>jdbc:sqlserver://&lt;host&gt;[:&lt;port-1433&gt;][;databaseName=&lt;database&gt;]</examplejdbcurl>
+      <usebasic>true</usebasic>
+      <websiteurl>http://www.microsoft.com/sql/downloads/</websiteurl>
+    </driver>
+    <driver>
+      <name>Sybase</name>
+      <driverclass>com.sybase.jdbc2.jdbc.SybDriver</driverclass>
+      <driverpath></driverpath>
+      <examplejdbcurl>jdbc:sybase:Tds:&lt;host&gt;[:&lt;port-2048&gt;][/&lt;database&gt;]</examplejdbcurl>
+      <usebasic>true</usebasic>
+      <websiteurl>http://www.sybase.com/products/middleware/jconnectforjdbc</websiteurl>
+    </driver>
+    <driver>
+      <name>Sybase JTDS</name>
+      <driverclass>net.sourceforge.jtds.jdbc.Driver</driverclass>
+      <driverpath>drivers/jtds-1.2.jar</driverpath>
+      <examplejdbcurl>jdbc:jtds:sybase://&lt;host&gt;[:&lt;port-2048&gt;][/&lt;database&gt;]</examplejdbcurl>
+      <usebasic>true</usebasic>
+      <websiteurl>http://jtds.sourceforge.net/</websiteurl>
+    </driver>
+  </drivercollection>
+</stella>
