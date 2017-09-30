@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{MM/dd/yyyy HH:mm:ss,SSS} %-5p (%C:%L) - %m %x %n" />
+    </Console>
+    <RollingFile name="RollingFile" fileName="stella.log" filePattern="stella%i-%d{yyyyMMdd}.log.gz">
+      <PatternLayout pattern="%d{MM/dd/yyyy HH:mm:ss,SSS} %-5p (%C:%L) - %m %x %n" />
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="512 KB" />
+      </Policies>
+      <DefaultRolloverStrategy max="1" />
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Root level="error">
+      <AppenderRef ref="Console" />
+      <AppenderRef ref="RollingFile" />
+    </Root>
+    <Logger name="org.stellasql" level="all"/>
+  </Loggers>
+</Configuration>

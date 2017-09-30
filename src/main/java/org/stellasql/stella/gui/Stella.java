@@ -549,8 +549,9 @@ public class Stella implements ControlListener, ShellListener
     try
     {
       System.out.println("starting");
+      logger.info("starting");
       logger.info("Java Version: " + System.getProperty("java.version"));
-
+      
       display = new Display();
 
       Color color = null;
