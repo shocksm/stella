@@ -300,72 +300,18 @@ public class Stella implements ControlListener, ShellListener
     pd.open(-1, mainShell.toDisplay(0, dialogY).y);
   }
 
-  private File findDocs(File file)
-  {
-    while (file != null)
-    {
-      if (!file.isDirectory())
-        file = file.getParentFile();
-      if (file != null)
-      {
-        File docDir = new File(file, "docs");
-        if (docDir.exists() && docDir.isDirectory())
-        {
-          File htmlFile = new File(docDir, "admain.html");
-          if (htmlFile.exists() && !htmlFile.isDirectory())
-          {
-            return htmlFile;
-          }
-        }
-
-        file = file.getParentFile();
-      }
-    }
-
-    return file;
-  }
-
   public void openHelpContents()
   {
-    File file = null;
-    Class cls = Logger.class; // LogForJ is in the lib directory
-    ProtectionDomain pDomain = cls.getProtectionDomain();
-    CodeSource cSource = pDomain.getCodeSource();
-    if (cSource != null)
-    {
-      URL loc = cSource.getLocation();
-      file = new File(loc.getFile().replaceAll("%20", " "));
-      file = findDocs(file);
-    }
-
-    if (file == null)
-    {
-      file = new File("");
-      file = new File(file.getAbsolutePath());
-      file = findDocs(file);
-    }
-
-    if (file == null)
-    {
-      cls = this.getClass();
-      pDomain = cls.getProtectionDomain();
-      cSource = pDomain.getCodeSource();
-      if (cSource != null)
-      {
-        URL loc = cSource.getLocation();
-        file = new File(loc.getFile().replaceAll("%20", " "));
-        file = findDocs(file);
-      }
-    }
+    File file = new File("docs/userguide.html");
 
     String urlString = null;
-    if (file != null)
+    if (file.exists())
     {
       urlString = "file:///" + file.getAbsolutePath();
     }
     else
     {
-      urlString = "http://www.stellasql.com/support.php";
+      urlString = "https://www.github.com/shocksm/stella";
     }
 
     WebSiteOpener.openURL(urlString, mainShell);
