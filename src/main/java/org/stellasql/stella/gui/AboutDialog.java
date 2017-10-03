@@ -65,8 +65,8 @@ public class AboutDialog extends StellaDialog implements SelectionListener
     label.setText("Version: " + version);
 
     Link link = new Link(rightComposite, SWT.NONE);
-    link.setText("<a>https://github.com/shocksm/stellasql</a>");
-    link.setData("https://github.com/shocksm/stellasql");
+    link.setText("<a>https://github.com/shocksm/stella</a>");
+    link.setData("https://github.com/shocksm/stella");
     link.addSelectionListener(this);
 
     label = new Label(rightComposite, SWT.NONE);

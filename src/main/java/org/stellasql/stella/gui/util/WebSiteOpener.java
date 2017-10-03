@@ -13,11 +13,6 @@ public class WebSiteOpener
 
   public static void openURL(String urlString, Shell shell)
   {
-    if (!urlString.toLowerCase().startsWith("http://")
-        && !urlString.toLowerCase().startsWith("https://"))
-    {
-      urlString = "http://" + urlString;
-    }
     try
     {
       Program.launch(urlString);

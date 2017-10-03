@@ -1,0 +1,239 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+<title>Stella SQL Guide</title>
+<meta name="description" content="The Stella SQL user guide">
+
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+	<h1>
+		Stella SQL User Guide
+	</h1>
+
+	<a href="#started">Getting Started</a>
+	<a href="#requirements">Requirements</a>
+	<a href="#installjdbc">Installing JDBC Drivers</a>
+	<a href="#setupjdbc">JDBC URLs and the Basic setting</a>
+	<a href="#connecting">Connecting to a Database</a>
+
+	<a href="#executesql">Executing SQL</a>
+
+	<h2 id="started">Getting Started</h2>
+	<p>Stella SQL is a database query tool. It allows you to browse and
+		query a database using a graphical user interface.</p>
+
+
+	<h2 id="requirements">Requirements</h2>
+	<p>
+		Java 1.6 or later is required. <a href="https://java.com/en/download/">Download
+			Java</a>
+	</p>
+
+	<p>You will also need a JDBC driver for the database(s) that you
+		want to connect to. Refer to the 'Installing JDBC Drivers' section of
+		this document for information on getting and installing other drivers.
+	</p>
+
+	<h2 id="installjdbc">Installing JDBC Drivers</h2>
+	<p>JDBC drivers can usually be downloaded directly from the
+		database vendor's website.</p>
+
+	<p>
+		After you have downloaded the driver for your database follow the
+		installation instructions as defined in the driver documentation. If
+		the downloaded driver has a .jar extension then you probably don't
+		have to do anything extra to install it. <br /> Note: It is not
+		recommended to install the driver into the Stella installation
+		directory as it may get deleted when you upgrade Stella.
+	</p>
+
+	<p>Now that you have the JDBC driver follow these steps to
+		configure Stella to use it.</p>
+
+	<ol>
+		<li>Open the 'Driver Manager' screen by selecting the 'Tools'
+			main menu item then select 'Driver Manager' from the menu drop down.
+		</li>
+
+		<li>Click on the green plus icon in the upper left corner to set
+			up a new driver. This will open the Driver Information screen.</li>
+
+		<li>Enter a 'Driver Name' in the first text field. The driver
+			name is used to identify this driver so it should at the very least
+			identify what kind of database the driver is for.</li>
+
+		<li>Enter the 'Driver Path' by using the 'File' or 'Directory'
+			button. If the driver is contained in a .jar file, as is most common,
+			then you should click the 'File' button then locate and select the
+			.jar file in the file selection dialog. If the driver is installed as
+			seperate .class files then you should click on the 'Directory' button
+			and select the directory where the class files are located. After the
+			driver location is selected the 'Driver Class' combo box should
+			automatically populate with at least one driver class. If it does not
+			refer to the driver documentation to ensure the driver is installed
+			correctly.</li>
+
+		<li>Select the correct 'Driver Class' in the combo box if more
+			than one is present. If there are no drive class selections in the
+			combo box please refer to the driver documentation to find out what
+			you should enter for the driver class.</li>
+
+		<li>In the 'Example JDBC URL' text field enter a example JDBC URL
+			as described in the driver documentation. If you would like to use
+			the basic setup for a new connection you must enter the example in a
+			specific format as described in the 'JDBC URLs and the Basic setting'
+			section of this document.</li>
+
+		<li>In the 'Driver Website URL' text field enter the website
+			address of the JDBC drivers home page for easy reference back to it
+			at a later time.</li>
+
+		<li>Press the 'OK' button to complete the set up of the driver.
+			The driver should now show up in the driver list with a green
+			checkmark next to it.</li>
+	</ol>
+
+
+	<h2 id="setupjdbc">JDBC URLs and the Basic setting</h2>
+	<p>
+		On the Driver Information screen JDBC Drivers can be set up to make it
+		easier to add and edit connections. To do this the 'Example JDBC URL'
+		of the Driver has to identify, or tag, the different parts of the URL
+		and the 'Use Basic Driver Parameters' option has to be selected. <br />
+		Note: To get to the the Driver Information screen, select the 'Tools'
+		main menu, then select 'Driver Manager' from the menu drop down, then
+		double click on the driver's name.
+	</p>
+
+	<p>To edit the 'Example JDBC URL' to support the basic option you
+		will need to locate the different parts of the URL (such as host and
+		port) and surround them with with &lt;&gt; (less than and greater than
+		signs). The text inside the &lt;&gt; segment will be used to label the
+		field on the Connection Configuration screen. These &lt;&gt; segments
+		will be replaced by the values entered in the basic Driver Parameters
+		section of the Connection Configurtion screen to generate the actual
+		JDBC URL that will be used to connect to the database. For example
+		&lt;host&gt; will add a 'Host' field to the basic option screen that
+		will get replaced with what is entered in the field.</p>
+
+	<p>If you would like to have a default value pre-populated for a
+		segment you can add '-defaultvalue' to the segment label inside of the
+		&lt;&gt;. For example &lt;host-localhost&gt; will add a 'Host' field
+		to the basic option with a default value of 'localhost'.</p>
+
+	<p>If a segment is optional it can be further surrounded by []
+		(open brace and close brace). The braces can also enclose any other
+		JDBC URL characters that are only needed if the optional segement is
+		being used. For example [;databaseName=&lt;database&gt;] indicates
+		that the 'database' field is optional and if it is entered then add
+		';databaseName=value' to the JDBC URL. If the field is left blank then
+		the ';databaseName=' part will not be added to the JDB URL.</p>
+
+	<h3>Example 1</h3>
+	<table>
+		<tr>
+			<td align="right">Reference URL:</td>
+			<td><b>jdbc:oracle:thin:@host:port:sid</b></td>
+		</tr>
+
+		<tr>
+			<td align="right">Basic Tagged URL:</td>
+			<td><b>jdbc:oracle:thin:@&lt;host&gt;:&lt;port-1521&gt;:&lt;database
+					sid&gt;</b></td>
+		</tr>
+	</table>
+	<p>This example uses the Oracle driver's Refernece URL where 'host'
+		is the hostname that Oracle is running on, 'port' is the port number
+		it is listening at, and 'sid' is the database service id. The Basic
+		Tagged URL will add 3 fields to the Driver Parameters section of the
+		Driver Information screen: Host, Port (with a default value of 1521),
+		and Database sid.</p>
+
+	<h3>Example 2</h3>
+	<table>
+		<tr>
+			<td align="right">Reference URL:</td>
+			<td><b>jdbc:sqlserver://serverName:port;databaseName=&lt;database&gt;</b>
+			</td>
+		</tr>
+
+		<tr>
+			<td align="right">Basic Tagged URL:</td>
+			<td><b>jdbc:sqlserver://&lt;host-localhost&gt;:&lt;port-1433&gt;[;databaseName=&lt;database&gt;]</b>
+			</td>
+		</tr>
+	</table>
+	<p>This example uses the Microsoft SQL Server driver's Reference
+		URL where 'serverName' is the hostname that SQL Server is running on,
+		'port' is the port number it is listening at, and 'database' is an
+		optional parameter to specifiy which database to default to. The Basic
+		Tagged URL will add 3 fields to the Driver Parameters section of the
+		Driver Information screen: Host (with a default value of localhost),
+		Port (with a default value of 1433), and the optional field Database.
+	</p>
+
+	<h2 id="connecting">Connecting to a Database</h2>
+	<p>Follow these steps to setup a new database connection and
+		connect to it.</p>
+
+	<ol>
+		<li>Select the 'Connection' item from the main menu bar then
+			select 'New' from the menu drop down. This will bring up the
+			Connection Configuration screen.</li>
+
+		<li>Enter a 'Connection Alias' in the first text field. The
+			connection alias is used to identify the database connection that you
+			are setting up so make sure to enter a name that has meaning to you;
+			for example, 'Customers - Development' or 'Finance - Production'.</li>
+
+		<li>Select the 'JDBC Driver' in the drop down that matches the
+			database you are setting the connection up for. If you do not see
+			your database listed then refer to the 'Installing JDBC Drivers'
+			section of this document.</li>
+
+		<li>Enter the connection information for your database in the
+			'Driver parameters' section. If you are familiar with JDBC driver set
+			up you can select the 'Advanced' option to enter the JDBC URL
+			directly.</li>
+
+		<li>Enter the 'Username' and 'Password' to use for the connection
+			in the 'Logon Credentials' section. If you would prefer to be
+			prompted for the username and password when you open the connection
+			the select the 'Prompt for Username and/or password' checkbox.</li>
+
+		<li>Click the 'Test' button to make sure the connection is set up
+			correctly. If you see a dialog that says 'Connection opened
+			successfully' everything is working. Click the 'OK' button to dismiss
+			the dialog and then press the 'OK' button on the Connection
+			Configuration screen to compelete the set up. If the connection test
+			indicated an error then review that everything was entered correctly.
+		</li>
+
+		<li>Select the 'Connection' item from the main menu bar then
+			select 'Open' from the menu drop down. Select the connection alias
+			name that you just set up and press 'OK'. You now have an open
+			connection to your database.</li>
+	</ol>
+
+
+	<h2 id="executesql">Executing SQL</h2>
+	<p>The SQL Editor is used to enter, edit, and execute SQL
+		statements. After connecting to a database as detailed in the
+		'Connecting to a Database' section of this document the SQL Editor is
+		the text area in the upper right section of the application.</p>
+
+	<p>Type in the SQL statement that you want to execute then press
+		the 'Execute Button' (the green arrow button directly above the SQL
+		Editor). The results are displayed in the Results Area below the SQL
+		Edtior. If you'd prefer to export the results directly to a file press
+		the small down arrow next to the 'Execute Button' then select 'Execute
+		and export results'.</p>
+
+</body>
+</html>
