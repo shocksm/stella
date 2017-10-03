@@ -1,9 +1,6 @@
 package org.stellasql.stella.gui;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +15,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.stellasql.stella.AliasVO;
@@ -38,21 +36,7 @@ public class Stella implements ControlListener, ShellListener
   // TODO
   /*
    * 
-   * splash screen on multiple monitor is spanning across monitors
-   * 
-   * Scale images and text based on screen size / DPI for now, preferable create larger images for each step up
-   * org.stellasql.stella.gui.util.ImageLoader
-   *   new Image(Display.getCurrent(), imageData.scaledTo(imageData.width*4, imageData.height*4));
-   * Google SWT Snippet367.java
-   *
-   * set appropiate dilaog size based on screen size / DPI
-   *    org.stellasql.stella.gui.DriverDialog
-   *
    * encrypt passwords - need a key/password - random or user defined?
-   *
-   * finish openHelpContents() and package docs
-   *
-   * Change default JDBC Urls to be basic friendly
    *
    * disabled images for toolbar, run button, and tree icons
    *
@@ -527,11 +511,16 @@ public class Stella implements ControlListener, ShellListener
         labelImage.setLayoutData(gridData);
 
         splashShell.pack();
-
-        int x = display.getClientArea().width / 2 - splashShell.getSize().x / 2;
-        int y = display.getClientArea().height / 2 - splashShell.getSize().y / 2;
-
-        splashShell.setLocation(x, y);
+        Monitor[] m = display.getMonitors();
+        if (m.length >= 1)
+        {
+          
+          int x = m[0].getBounds().width / 2 - splashShell.getSize().x / 2;
+          int y = m[0].getBounds().height / 2 - splashShell.getSize().y / 2;
+  
+          splashShell.setLocation(x, y);
+        }
+        
         splashShell.open();
       }
 
