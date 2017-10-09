@@ -215,16 +215,12 @@ public class InsertDialog extends BaseInsertUpdateDialog
     display.addFilter(SWT.KeyDown, new Listener(){@Override
     public void handleEvent(Event event)
     {
-      System.out.println("HERE: " + event.keyCode + " " + event.stateMask);
-
       event.doit = false;
     }});
 
     display.addFilter(SWT.Traverse, new Listener(){@Override
     public void handleEvent(Event event)
     {
-      System.out.println("HERE2: " + event.keyCode + " " + event.stateMask);
-
       event.doit = false;
     }});
 

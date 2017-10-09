@@ -48,8 +48,6 @@ public class SessionData implements AliasChangeListener
   private String exportDateFormat = null;
   private String exportTimeFormat = null;
   private String exportTextDelimiter = null;
-  private boolean exportExcelSplitWorksheet = true;
-  private int exportExcelSplitRowCount = 65535;
 
   public String getExportFormat()
   {
@@ -453,26 +451,6 @@ public class SessionData implements AliasChangeListener
   public void setExportTextDelimiter(String exportTextDelimiter)
   {
     this.exportTextDelimiter = exportTextDelimiter;
-  }
-
-  public boolean getExportExcelSplitWorksheet()
-  {
-    return exportExcelSplitWorksheet;
-  }
-
-  public void setExportExcelSplitWorksheet(boolean exportExcelSplitWorksheet)
-  {
-    this.exportExcelSplitWorksheet = exportExcelSplitWorksheet;
-  }
-
-  public int getExportExcelSplitRowCount()
-  {
-    return exportExcelSplitRowCount;
-  }
-
-  public void setExportExcelSplitRowCount(int exportExcelSplitRowCount)
-  {
-    this.exportExcelSplitRowCount = exportExcelSplitRowCount;
   }
 
 }

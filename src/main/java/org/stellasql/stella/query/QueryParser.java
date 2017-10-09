@@ -233,30 +233,6 @@ public class QueryParser
         tableList.add(token);
     }
 
-
-    /*
-    System.out.println("COLUMNS: ");
-    for (Iterator it = columnList.iterator(); it.hasNext();)
-    {
-      token = (Token) it.next();
-      System.out.println(token);
-    }
-
-    System.out.println("INTO TABLES: ");
-    for (Iterator it = intoTableList.iterator(); it.hasNext();)
-    {
-      token = (Token) it.next();
-      System.out.println(token);
-    }
-
-    System.out.println("FROM TABLES: ");
-    for (Iterator it = tableList.iterator(); it.hasNext();)
-    {
-      token = (Token) it.next();
-      System.out.println(token);
-    }
-    */
-
     tables = processTables(tableList);
     HashMap map = new HashMap();
     for (Iterator it = tables.iterator(); it.hasNext();)

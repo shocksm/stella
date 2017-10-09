@@ -178,8 +178,6 @@ public class ExportDialog extends StellaDialog implements SelectionListener
       generalOptions.setDateFormat(sessionData.getExportDateFormat());
       generalOptions.setTimeFormat(sessionData.getExportTimeFormat());
       textOptions.setDelimiter(sessionData.getExportTextDelimiter());
-      excelOptions.setSplitWorksheet(sessionData.getExportExcelSplitWorksheet());
-      excelOptions.setSplitRowCount(sessionData.getExportExcelSplitRowCount());
     }
     layoutFormat();
   }
@@ -247,9 +245,6 @@ public class ExportDialog extends StellaDialog implements SelectionListener
       sessionData.setExportDateFormat(exportOptions.getDateFormat());
       sessionData.setExportTimeFormat(exportOptions.getTimeFormat());
       sessionData.setExportTextDelimiter(textOptions.getDelimiter());
-
-      sessionData.setExportExcelSplitWorksheet(excelOptions.getSplitWorksheet());
-      sessionData.setExportExcelSplitRowCount(excelOptions.getSplitRowCount());
 
       getShell().dispose();
     }
@@ -662,191 +657,30 @@ public class ExportDialog extends StellaDialog implements SelectionListener
 
   }
 
-  private class ExcelOptions extends BaseOptions implements SelectionListener, VerifyListener
+  private class ExcelOptions extends BaseOptions
   {
-    private Button splitWorksheetButton = null;
-    private Button excel64kRadioButton = null;
-    private Button excel1024kRadioButton = null;
-    private Button customRadioButton = null;
-    private Text customText = null;
-
     public ExcelOptions(Composite parent)
     {
       super(parent);
-
-      GridLayout gl = new GridLayout();
-      gl.numColumns = 1;
-      gl.marginHeight = 0;
-      gl.marginWidth = 0;
-      this.setLayout(gl);
-
-      Group optionsGroup = new Group(this, SWT.NONE);
-      optionsGroup.setText("Excel Options");
-      gl = new GridLayout();
-      gl.numColumns = 2;
-      gl.verticalSpacing = 10;
-      optionsGroup.setLayout(gl);
-      GridData gridData = new GridData();
-      gridData.horizontalAlignment = SWT.FILL;
-      gridData.grabExcessHorizontalSpace = true;
-      optionsGroup.setLayoutData(gridData);
-
-
-      splitWorksheetButton = new Button(optionsGroup, SWT.CHECK);
-      splitWorksheetButton.setText("&Split rows across multiple worksheets");
-      splitWorksheetButton.setSelection(true);
-      gridData = new GridData();
-      gridData.horizontalSpan = 2;
-      splitWorksheetButton.setLayoutData(gridData);
-      splitWorksheetButton.addSelectionListener(this);
-
-      excel64kRadioButton = new Button(optionsGroup, SWT.RADIO);
-      excel64kRadioButton.setText("Split at 65,535 rows (Excel 2000-2003 limitation)");
-      excel64kRadioButton.setSelection(true);
-      gridData = new GridData();
-      gridData.horizontalSpan = 2;
-      gridData.horizontalIndent = 20;
-      excel64kRadioButton.setLayoutData(gridData);
-      excel64kRadioButton.addSelectionListener(this);
-
-      excel1024kRadioButton = new Button(optionsGroup, SWT.RADIO);
-      excel1024kRadioButton.setText("Split at 1,048,576 rows (Excel XP and later limitation)");
-      gridData = new GridData();
-      gridData.horizontalSpan = 2;
-      gridData.horizontalIndent = 20;
-      excel1024kRadioButton.setLayoutData(gridData);
-      excel1024kRadioButton.addSelectionListener(this);
-
-
-      customRadioButton = new Button(optionsGroup, SWT.RADIO);
-      customRadioButton.setText("Split at");
-      gridData = new GridData();
-      gridData.horizontalIndent = 20;
-      customRadioButton.setLayoutData(gridData);
-      customRadioButton.addSelectionListener(this);
-
-      customText = new Text(optionsGroup, SWT.BORDER);
-      gridData = new GridData();
-      gridData.widthHint = 100;
-      customText.setLayoutData(gridData);
-      customText.setEnabled(false);
-      customText.addVerifyListener(this);
-    }
-
-    public boolean getSplitWorksheet()
-    {
-      return splitWorksheetButton.getSelection();
-    }
-
-    public void setSplitWorksheet(boolean split)
-    {
-      splitWorksheetButton.setSelection(split);
-      doSelections();
-    }
-
-    public int getSplitRowCount()
-    {
-      int value = 65535;
-      if (excel64kRadioButton.getSelection())
-        value = 65535;
-      else if (excel1024kRadioButton.getSelection())
-        value = 1048576;
-      else if (customRadioButton.getSelection())
-      {
-        try
-        {
-          int cvalue = Integer.parseInt(customText.getText());
-          if (cvalue > 0)
-            value = cvalue;
-        }
-        catch (NumberFormatException e)
-        {
-        }
-      }
-
-      return value;
-    }
-
-    public void setSplitRowCount(int split)
-    {
-      excel64kRadioButton.setSelection(false);
-      excel1024kRadioButton.setSelection(false);
-      customRadioButton.setSelection(false);
-      if (split == 65535)
-        excel64kRadioButton.setSelection(true);
-      else if (split == 1048576)
-        excel1024kRadioButton.setSelection(true);
-      else
-      {
-        customRadioButton.setSelection(true);
-        customText.setText("" + split);
-      }
-
-      doSelections();
+      setSize(0, 0);
     }
 
     @Override
     public String[] getFilterExtendsions()
     {
-      return new String[]{"*.xls", "*"};
+      return new String[]{"*.xlsx", "*"};
     }
 
     @Override
     public String[] getFilterNames()
     {
-      return new String[]{"Excel files (*.xls)", "all files (*)"};
+      return new String[]{"Excel files (*.xlsx)", "all files (*)"};
     }
 
     @Override
     public ExportOptions getExportOptions()
     {
-      if (getSplitWorksheet())
-        return new ExcelExportOptions(getSplitRowCount());
-      else
-        return new ExcelExportOptions();
-    }
-
-    @Override
-    public void widgetDefaultSelected(SelectionEvent e)
-    {
-    }
-
-    @Override
-    public void widgetSelected(SelectionEvent e)
-    {
-      doSelections();
-    }
-
-    private void doSelections()
-    {
-      boolean enabled = splitWorksheetButton.getSelection();
-      excel64kRadioButton.setEnabled(enabled);
-      excel1024kRadioButton.setEnabled(enabled);
-      customRadioButton.setEnabled(enabled);
-      if (customRadioButton.getSelection() && customRadioButton.getEnabled())
-        customText.setEnabled(true);
-      else
-        customText.setEnabled(false);
-    }
-
-    @Override
-    public void verifyText(VerifyEvent e)
-    {
-      if (e.widget == customText)
-      {
-        if (e.text != null)
-        {
-          for (int index = 0; index < e.text.length(); index++)
-          {
-            if (!Character.isDigit(e.text.charAt(index)))
-            {
-              e.doit = false;
-              break;
-            }
-          }
-
-        }
-      }
+      return new ExcelExportOptions();
     }
 
   }
