@@ -283,6 +283,10 @@ public class CustomTable extends Composite implements KeyListener, MouseListener
     return table.getSelectionIndex();
   }
 
+  public int[] getSelectionIndices() {
+  	return table.getSelectionIndices();
+  }
+
   private void copyCell()
   {
     TableItem item = table.getItem(selectedRow);

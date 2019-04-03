@@ -44,6 +44,7 @@ import org.stellasql.stella.gui.custom.CustomTable;
 import org.stellasql.stella.gui.custom.MessageDialog;
 import org.stellasql.stella.gui.statement.DataTypeUtil;
 import org.stellasql.stella.gui.statement.DeleteDialog;
+import org.stellasql.stella.gui.statement.InsertBuilder;
 import org.stellasql.stella.gui.statement.InsertDialog;
 import org.stellasql.stella.gui.statement.UpdateDialog;
 import org.stellasql.stella.gui.util.BusyManager;
@@ -185,7 +186,7 @@ public class ResultTableComposite extends Composite implements MouseListener, Di
 
       insertRowMI  = new MenuItem(customTable.getMenu(), SWT.PUSH);
       insertRowMI.addSelectionListener(this);
-      insertRowMI.setText("Create I&nsert for selected row");
+      insertRowMI.setText("Create I&nsert for selected row(s)");
 
       updateRowMI  = new MenuItem(customTable.getMenu(), SWT.PUSH);
       updateRowMI.addSelectionListener(this);
@@ -328,7 +329,7 @@ public class ResultTableComposite extends Composite implements MouseListener, Di
 
     if (editable)
     {
-      insertRowMI.setEnabled(customTable.getSelectionCount() == 1);
+      insertRowMI.setEnabled(customTable.getSelectionCount() >= 1);
       updateRowMI.setEnabled(customTable.getSelectionCount() == 1);
       deleteRowMI.setEnabled(customTable.getSelectionCount() == 1);
     }
@@ -529,7 +530,7 @@ public class ResultTableComposite extends Composite implements MouseListener, Di
   private void showInsertRowInternal()
   {
     TableInfo tableInfo = resultData.getTable();
-    List resultColumnIndex = new LinkedList();
+    List<Integer> resultColumnIndex = new LinkedList<Integer>();
     findAllColumns(tableInfo, resultColumnIndex, true);
 
     if (resultColumnIndex.size() == 0)
@@ -538,20 +539,24 @@ public class ResultTableComposite extends Composite implements MouseListener, Di
     }
     else
     {
-      InsertDialog id = new InsertDialog(getShell(), tableInfo, SessionData.getSessionData(sessionName));
-      int row = customTable.getSelectionIndex();
-      for (Iterator it = resultColumnIndex.iterator(); it.hasNext();)
+      for (int row : customTable.getSelectionIndices())
       {
-        int colIndex = ((Integer)it.next()).intValue();
-        String colName = resultData.getColumnNames()[colIndex];
-        Object value = resultData.getCell(row, colIndex);
+        InsertBuilder ib = new InsertBuilder(tableInfo);
+        for (Iterator<Integer> it = resultColumnIndex.iterator(); it.hasNext(); )
+        {
+          int colIndex = it.next().intValue();
+          String colName = resultData.getColumnNames()[colIndex];
+          Object value = resultData.getCell(row, colIndex);
 
-        id.addColumnValue(colName, value);
+          ColumnInfo ci = tableInfo.getColumn(colName);
+          if (ci != null)
+          {
+            ib.addColumnValue(ci, value);
+          }
+        }
+        SessionData.getSessionData(sessionName).addQueryText(ib.buildStatement());
       }
-
-      id.open();
     }
-
   }
 
   private void showDeleteRowInternal()

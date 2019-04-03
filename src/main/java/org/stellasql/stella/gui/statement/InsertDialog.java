@@ -198,7 +198,8 @@ public class InsertDialog extends BaseInsertUpdateDialog
 
     sbuf.append("\n(").append(columns).append(")\n");
     sbuf.append("VALUES");
-    sbuf.append("\n(").append(values).append(")\n");
+    sbuf.append("\n(").append(values).append(")");
+    sbuf.append(ApplicationData.getInstance().getQuerySeparator());
 
     statementText.setText(sbuf.toString());
   }

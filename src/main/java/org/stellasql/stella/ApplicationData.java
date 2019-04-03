@@ -84,7 +84,6 @@ public class ApplicationData
   private String querySeparator = ";";
   private Map syntaxMap = new HashMap();
   private List syntaxListenerList = new LinkedList();
-  private RegistrationData regData = null;
   private QueryFavoriteFolder favoritesRootFolder = null;
 
 
@@ -723,13 +722,6 @@ public class ApplicationData
     Element elem = DocumentHelper.createElement("version");
     elem.addText(VERSION);
     rootElem.add(elem);
-
-    if (regData != null && regData.getKeyCode().length() > 0)
-    {
-      elem = DocumentHelper.createElement("keycode");
-      elem.addText(regData.getKeyCode());
-      rootElem.add(elem);
-    }
 
     Element aliasElem = DocumentHelper.createElement("connectioncollection");
     rootElem.add(aliasElem);
