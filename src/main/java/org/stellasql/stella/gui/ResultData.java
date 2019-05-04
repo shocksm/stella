@@ -98,6 +98,10 @@ public class ResultData implements TableData
   @Override
   public Object getCell(int row, int column)
   {
+    if (row >= objArrayList.size()) {
+      return null;
+    }
+
     Object[] objArray = (Object[])objArrayList.get(row);
     return objArray[column];
   }
