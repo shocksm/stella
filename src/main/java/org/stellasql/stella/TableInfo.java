@@ -11,7 +11,7 @@ public class TableInfo
   private String schema = "";
   private String catalog = "";
   private String type = "";
-  private List columnInfoList = new LinkedList();
+  private List<ColumnInfo> columnInfoList = new LinkedList<ColumnInfo>();
   private List indexInfoList = new LinkedList();
   private LinkedList pkInfoList = new LinkedList();
   private boolean columnsLoaded = false;
@@ -108,6 +108,16 @@ public class TableInfo
   public List getColumns()
   {
     return columnInfoList;
+  }
+
+  public ColumnInfo getColumn(String name) {
+  	for (ColumnInfo ci : columnInfoList) {
+  		if (ci.getColumnName().equals(name)) {
+  			return ci;
+  		}
+  	}
+
+  	return null;
   }
 
   public void clearColumns()

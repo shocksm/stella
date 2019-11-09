@@ -15,6 +15,7 @@ public class AliasVO implements Comparable<AliasVO>
   private String username = "";
   private String password = "";
   private boolean prompt = false;
+  private int dbOTWidth = 300;
 
   public AliasVO()
   {
@@ -33,6 +34,7 @@ public class AliasVO implements Comparable<AliasVO>
     setPassword(aliasVO.getPassword());
     setDriverName(aliasVO.getDriverName());
     setPrompt(aliasVO.getPrompt());
+    setDBObjectTreeWidth(aliasVO.getDBObjectTreeWidth());
   }
 
 
@@ -82,6 +84,12 @@ public class AliasVO implements Comparable<AliasVO>
     this.username = username;
   }
 
+  public int getDBObjectTreeWidth() { return dbOTWidth; }
+
+  public void setDBObjectTreeWidth(int width) {
+    dbOTWidth = width;
+  }
+
   public void setXML(Node node)
   {
     setName(XMLUtils.getNodeText(node, node.getUniquePath() + "/name"));
@@ -90,6 +98,7 @@ public class AliasVO implements Comparable<AliasVO>
     setUsername(XMLUtils.getNodeText(node, node.getUniquePath() + "/username"));
     setPassword(XMLUtils.getNodeText(node, node.getUniquePath() + "/password"));
     setPrompt(XMLUtils.getNodeAsBoolean(node, node.getUniquePath() + "/prompt"));
+    setDBObjectTreeWidth(XMLUtils.getNodeAsInt(node, node.getUniquePath() + "/dbobjecttreewidth", 300));
   }
 
 
@@ -102,6 +111,7 @@ public class AliasVO implements Comparable<AliasVO>
     elem.addElement("username").addText(getUsername());
     elem.addElement("password").addText(getPassword());
     elem.addElement("prompt").addText("" + getPrompt());
+    elem.addElement("dbobjecttreewidth").addText("" + getDBObjectTreeWidth());
 
     return elem;
   }

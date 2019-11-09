@@ -1,5 +1,6 @@
 package org.stellasql.stella.connection;
 
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -316,6 +317,27 @@ public class QuerySequencer
         {
           logger.info(e.getMessage(), e);
           String msg = e.getMessage();
+
+          if (e.getClass().getName().startsWith("com.ibm.db2")) {
+            // poor sod is using ibm db2, lets have pity on them
+
+            // ibm code is disappointing :( so we have to bend over backwards to get a useful error message
+            try {
+              Method method = e.getClass().getMethod("getSqlca", null);
+              if (method != null) {
+                Object obj = method.invoke(e, null);
+                method = obj.getClass().getMethod("getMessage", null);
+                Object ibmissubpar = method.invoke(obj, null);
+                if (ibmissubpar instanceof String) {
+                  msg = (String) ibmissubpar;
+                }
+              }
+            }
+            catch (Exception ex) {
+              logger.warn(ex.getMessage(), ex);
+            }
+          }
+
           if (msg == null)
             msg = e.getClass().getName();
           resultsList.add(new QueryError(msg));
@@ -381,7 +403,7 @@ public class QuerySequencer
                                   Timestamp for Oracle
                                   note: that above is prior to oracle 9 jdbc drivers
                                       the oracle 10 drivers do return a date now
-                                      which has fucked everything all up - have to set a
+                                      which has messed everything all up - have to set a
                                       system property -Doracle.jdbc.V8Compatible=true to get
                                       the driver to work the old way (oracle docs are wrong
                                       on the property name.  decompile oracle.jdbc.driver.OracleDriver
@@ -399,14 +421,14 @@ public class QuerySequencer
     {
       obj = rs.getObject(columnIndex);
 
-      // kludge to work around oracle shitty drivers
+      // kludge to work around oracle odd drivers
       if (obj != null)
       {
         String classname = obj.getClass().getName().toLowerCase();
         if (classname.indexOf("oracle") >= 0
             && classname.indexOf("timestamp") >= 0)
         {
-          obj = rs.getTimestamp(columnIndex); /* oracle pretty much sucks at writing jdbc drivers
+          obj = rs.getTimestamp(columnIndex); /* oracle jdbc drivers :(
                                                  doing a 'select systimestamp from dual' returns
                                                  a sqlType of -101 which is not defined */
         }

@@ -72,17 +72,6 @@ public class Stella implements ControlListener, ShellListener
    * option to limit max number of result tabs open -> oldest would drop off
    * remove newlines from history combo and everywhere else then map back to newline when needed
    *
-   * Notes:
-   *  JTDS Driver sucks with Sybase.  It fails on several metadata calls
-   *  and also on stored proc calls. It seems to try to store data in temp tables
-   *  or other tables and does not have permissions
-   *
-   *  Oracle Drivers pretty much suck. If you are expecting to see time values for
-   *  date columns you will need to add this to the Stella.ini file.
-   *  -Doracle.jdbc.V8Compatible=true
-   *
-   *
-   *
    */
 
   private static Stella stella = null;

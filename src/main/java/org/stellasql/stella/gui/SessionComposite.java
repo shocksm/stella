@@ -10,17 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -38,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.Shell;
+import org.stellasql.stella.AliasVO;
 import org.stellasql.stella.ApplicationData;
 import org.stellasql.stella.FontChangeListener;
 import org.stellasql.stella.connection.ConnectionManager;
@@ -50,7 +41,8 @@ import org.stellasql.stella.session.MessageHandler;
 import org.stellasql.stella.session.SessionData;
 import org.stellasql.stella.session.SessionEndListener;
 
-public class SessionComposite extends Composite implements SessionEndListener, MessageHandler, DisposeListener, FontChangeListener, MouseListener, ShellListener, FocusListener, SelectionListener
+public class SessionComposite extends Composite implements SessionEndListener, MessageHandler, DisposeListener,
+        FontChangeListener, MouseListener, ShellListener, FocusListener, SelectionListener, ControlListener
 {
   private final static Logger logger = LogManager.getLogger(SessionComposite.class);
   private final static int SUCCESS = 1;
@@ -102,6 +94,7 @@ public class SessionComposite extends Composite implements SessionEndListener, M
     sash = new Sash(sashComposite, SWT.VERTICAL | SWT.SMOOTH);
     sash.addSelectionListener(this);
 
+
     QueryComposite qc = new QueryComposite(sashComposite, this, this.sessionName);
 
     FormData fd = new FormData();
@@ -112,7 +105,8 @@ public class SessionComposite extends Composite implements SessionEndListener, M
     dbotc.setLayoutData(fd);
 
     fd = new FormData();
-    fd.left = new FormAttachment(0, 200);
+    int width = SessionData.getSessionData(this.sessionName).getAlias().getDBObjectTreeWidth();
+    fd.left = new FormAttachment(0, width);
     fd.top = new FormAttachment(0, 0);
     fd.bottom = new FormAttachment(100, 0);
     fd.width = 4;
@@ -157,6 +151,7 @@ public class SessionComposite extends Composite implements SessionEndListener, M
     messageText.setLineSpacing(1);
     messageText.addFocusListener(this);
     new StyledTextContextMenu(messageText);
+
 
     setFonts();
     ApplicationData.getInstance().addFontChangeListener(this);
@@ -408,6 +403,8 @@ public class SessionComposite extends Composite implements SessionEndListener, M
             sashComposite.setEnabled(true);
             dbotc.init();
 
+            dbotc.addControlListener(SessionComposite.this);
+
             SessionData.getSessionData(sessionName).sessionReady();
           }
           else
@@ -534,6 +531,17 @@ public class SessionComposite extends Composite implements SessionEndListener, M
   public void focusLost(FocusEvent e)
   {
     dropDown(false);
+  }
+
+  @Override
+  public void controlMoved(ControlEvent controlEvent) {
+
+  }
+
+  @Override
+  public void controlResized(ControlEvent controlEvent) {
+    int width = dbotc.getSize().x;
+    ApplicationData.getInstance().setAliasDBObjectTreeWidth(SessionData.getSessionData(sessionName).getAlias().getName(), width);
   }
 
   private class FlashTask extends TimerTask

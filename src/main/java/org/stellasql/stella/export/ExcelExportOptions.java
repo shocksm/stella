@@ -5,25 +5,20 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.stellasql.excelexporter.ExcelXMLExport;
+import org.stellasql.excelexporter.ExcelExport;
 
 public class ExcelExportOptions extends ExportOptions
 {
-  private ExcelXMLExport excelExport = null;
-  private boolean splitWorksheet = false;
-  private int rowSplit = 65535;
+  private ExcelExport excelExport = null;
 
   public ExcelExportOptions()
   {
     super();
-    splitWorksheet = false;
   }
 
   public ExcelExportOptions(int rowsplit)
   {
     super();
-    splitWorksheet = true;
-    rowSplit = rowsplit;
   }
 
   @Override
@@ -31,22 +26,20 @@ public class ExcelExportOptions extends ExportOptions
   {
     File file = getFile(resultSetCount);
 
-    if (splitWorksheet)
-      excelExport = new ExcelXMLExport(file, rowSplit);
-    else
-      excelExport = new ExcelXMLExport(file);
+    excelExport = new ExcelExport(file);
 
 
     int columns = getColumnCount();
     for (int count = 0; count < columns; count++)
     {
       int type = getColumnType(count);
+      
       if (type == Types.CHAR
           || type == Types.CLOB
           || type == Types.LONGVARCHAR
           || type == Types.VARCHAR)
       {
-        excelExport.setColumnType(count, ExcelXMLExport.STRING_TYPE);
+        excelExport.setColumnType(count, ExcelExport.STRING_TYPE);
       }
       else if (type == Types.DATE
               ||type == Types.TIME
@@ -57,7 +50,7 @@ public class ExcelExportOptions extends ExportOptions
           format += " ";
         format += getTimeFormat().replaceAll("a", "AM/PM");
 
-        excelExport.setColumnType(count, ExcelXMLExport.DATETIME_TYPE, format);
+        excelExport.setColumnType(count, ExcelExport.DATETIME_TYPE, format);
       }
       else if (type == Types.BIGINT
               || type == Types.BINARY
@@ -71,15 +64,13 @@ public class ExcelExportOptions extends ExportOptions
               || type == Types.SMALLINT
               || type == Types.TINYINT)
       {
-        excelExport.setColumnType(count, ExcelXMLExport.NUMBER_TYPE);
+        excelExport.setColumnType(count, ExcelExport.NUMBER_TYPE);
       }
       else
       {
-        excelExport.setColumnType(count, ExcelXMLExport.STRING_TYPE);
+        excelExport.setColumnType(count, ExcelExport.STRING_TYPE);
       }
     }
-
-    excelExport.writeHeader();
 
     return file;
   }

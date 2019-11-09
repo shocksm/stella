@@ -84,7 +84,6 @@ public class ApplicationData
   private String querySeparator = ";";
   private Map syntaxMap = new HashMap();
   private List syntaxListenerList = new LinkedList();
-  private RegistrationData regData = null;
   private QueryFavoriteFolder favoritesRootFolder = null;
 
 
@@ -240,6 +239,19 @@ public class ApplicationData
     return index;
   }
 
+  public void setAliasDBObjectTreeWidth(String name, int width)
+  {
+    AliasVO value = null;
+    for (Iterator it = aliasList.iterator(); it.hasNext();)
+    {
+      AliasVO aliasVO = (AliasVO)it.next();
+      if (aliasVO.getName().equals(name))
+      {
+        aliasVO.setDBObjectTreeWidth(width);
+        break;
+      }
+    }
+  }
 
   public AliasVO getAlias(String name)
   {
@@ -723,13 +735,6 @@ public class ApplicationData
     Element elem = DocumentHelper.createElement("version");
     elem.addText(VERSION);
     rootElem.add(elem);
-
-    if (regData != null && regData.getKeyCode().length() > 0)
-    {
-      elem = DocumentHelper.createElement("keycode");
-      elem.addText(regData.getKeyCode());
-      rootElem.add(elem);
-    }
 
     Element aliasElem = DocumentHelper.createElement("connectioncollection");
     rootElem.add(aliasElem);

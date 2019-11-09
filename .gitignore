@@ -1,7 +1,9 @@
 *.log
+*.gz
 # maven target directory
 /target/
-
+#IntelliJ
+/.idea
 # eclipse junk
 /.project
 /.classpath

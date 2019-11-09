@@ -3,6 +3,8 @@ package org.stellasql.stella.gui.custom;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.HTMLTransfer;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -42,12 +44,15 @@ import org.stellasql.stella.gui.util.WorkerRunnable;
 
 public class CustomTable extends Composite implements KeyListener, MouseListener, MouseMoveListener, SelectionListener, MenuListener, PaintListener
 {
+  private final static Logger logger = LogManager.getLogger(CustomTable.class);
+
   private Composite innerComposite = null;
   private Table table = null;
   private int selectionStart = -1;
   private int selectionStop = -1;
   private boolean mouseSelect = false;
   private Menu menu = null;
+  private MenuItem copyColumnHeader = null;
   private MenuItem copyCellMI = null;
   private MenuItem copyRowMI = null;
   private MenuItem copyHtmlMI = null;
@@ -56,7 +61,7 @@ public class CustomTable extends Composite implements KeyListener, MouseListener
   private MenuItem selectAllMI = null;
   private int selectedRow = -1;
   private int selectedColumn = 0;
-
+  private int clickedColumnIndex = 0;
 
   private TableData tableData = null;
 
@@ -108,6 +113,38 @@ public class CustomTable extends Composite implements KeyListener, MouseListener
     table.addSelectionListener(this);
     //table.setVisible(false);
 
+    Listener listener = new Listener()
+    {
+      @Override
+      public void handleEvent(Event event)
+      {
+        Point pt = event.widget.getDisplay().map(null, table, new Point(event.x, event.y));
+        // If there are no rows create a 'fake' one so we can get the column bounds
+        boolean fake = true;
+        TableItem row = null;
+        if (table.getItemCount() > 0) {
+          row = table.getItem(0);
+          fake = false;
+        }
+        else {
+          row = new TableItem(table, 0);
+        }
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+          Rectangle rec = row.getBounds(i);
+
+          if ((pt.x > rec.x)  && (pt.x < (rec.x + rec.width))) {
+            clickedColumnIndex = i;
+          }
+        }
+
+        if (fake) {
+          row.dispose();
+        }
+      }
+    };
+    table.addListener(SWT.MenuDetect, listener);
+
     menu = new Menu(table);
     table.setMenu(menu);
 
@@ -116,6 +153,13 @@ public class CustomTable extends Composite implements KeyListener, MouseListener
     copyCellMI.setText("&Copy cell\tCtrl+C");
 
     new MenuItem(menu, SWT.SEPARATOR);
+
+    if (headerVisible) {
+      copyColumnHeader = new MenuItem(menu, SWT.PUSH);
+      copyColumnHeader.addSelectionListener(this);
+      copyColumnHeader.setText("Copy Column Name");
+      new MenuItem(menu, SWT.SEPARATOR);
+    }
 
     copyRowMI = new MenuItem(menu, SWT.PUSH);
     copyRowMI.addSelectionListener(this);
@@ -283,12 +327,25 @@ public class CustomTable extends Composite implements KeyListener, MouseListener
     return table.getSelectionIndex();
   }
 
+  public int[] getSelectionIndices() {
+  	return table.getSelectionIndices();
+  }
+
   private void copyCell()
   {
     TableItem item = table.getItem(selectedRow);
     String value = item.getText(selectedColumn);
     TextTransfer textTransfer = TextTransfer.getInstance();
     StellaClipBoard.getClipBoard().setContents(new Object[]{value.trim()}, new Transfer[]{textTransfer});
+  }
+
+  private void copyHeaderName()
+  {
+    if (clickedColumnIndex < table.getColumnCount()) {
+      String value = table.getColumn(clickedColumnIndex).getText();
+      TextTransfer textTransfer = TextTransfer.getInstance();
+      StellaClipBoard.getClipBoard().setContents(new Object[]{value.trim()}, new Transfer[]{textTransfer});
+    }
   }
 
   private void copy(boolean includeHeader)
@@ -383,6 +440,10 @@ public class CustomTable extends Composite implements KeyListener, MouseListener
     else if (e.widget == copyHtmlMI)
     {
       copyHtml(false);
+    }
+    else if (e.widget == copyColumnHeader)
+    {
+      copyHeaderName();
     }
     else if (e.widget == copyHeaderMI)
     {
