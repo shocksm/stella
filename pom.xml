@@ -124,9 +124,7 @@
 				<version>3.1.0</version>
 				<configuration>
 					<descriptors>
-						<descriptor>src/assembly/win32.xml</descriptor>
 						<descriptor>src/assembly/win64.xml</descriptor>
-						<descriptor>src/assembly/linux32.xml</descriptor>
 						<descriptor>src/assembly/linux64.xml</descriptor>
 						<descriptor>src/assembly/mac.xml</descriptor>
 					</descriptors>
