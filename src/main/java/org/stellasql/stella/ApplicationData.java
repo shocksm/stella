@@ -239,6 +239,19 @@ public class ApplicationData
     return index;
   }
 
+  public void setAliasDBObjectTreeWidth(String name, int width)
+  {
+    AliasVO value = null;
+    for (Iterator it = aliasList.iterator(); it.hasNext();)
+    {
+      AliasVO aliasVO = (AliasVO)it.next();
+      if (aliasVO.getName().equals(name))
+      {
+        aliasVO.setDBObjectTreeWidth(width);
+        break;
+      }
+    }
+  }
 
   public AliasVO getAlias(String name)
   {
