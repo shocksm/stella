@@ -2,7 +2,7 @@ package org.stellasql.stella.gui.custom;
 
 
 
-public interface TableData
+public interface TableData<T>
 {
   public Object getCell(int row, int column);
 
@@ -20,7 +20,7 @@ public interface TableData
 
   public String getColumnToolTip(int index);
 
-  public Object getRowObject(int row);
+  public T getRowObject(int row);
 
-  public int getIndexOfRowObject(Object obj);
+  public int getIndexOfRowObject(T obj);
 }

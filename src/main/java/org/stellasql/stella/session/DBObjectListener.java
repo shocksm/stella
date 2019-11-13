@@ -7,11 +7,11 @@ import org.stellasql.stella.TableInfo;
 
 public interface DBObjectListener
 {
-  public void catalogDataAvailable(List tableTypes, List catalogs);
+  public void catalogDataAvailable(List<String> tableTypes, List<String> catalogs);
 
-  public void tableDataAvailable(String catalog, String tableType, List tableInfoList);
+  public void tableDataAvailable(String catalog, String tableType, List<TableInfo> tableInfoList);
 
-  public void procedureDataAvailable(String catalog, List procedureInfoList);
+  public void procedureDataAvailable(String catalog, List<ProcedureInfo> procedureInfoList);
 
   public void columnDataAvailable(TableInfo tableInfo);
 

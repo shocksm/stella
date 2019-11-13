@@ -11,9 +11,9 @@ public class ProcedureInfo
   private String schema = "";
   private String catalog = "";
   private String remarks = "";
-  private List columnInfoList = new LinkedList();
-  private List indexInfoList = new LinkedList();
-  private LinkedList pkInfoList = new LinkedList();
+  private List<ProcedureColumnInfo> columnInfoList = new LinkedList<ProcedureColumnInfo>();
+  private List<IndexInfo> indexInfoList = new LinkedList<IndexInfo>();
+  private LinkedList<PrimaryKeyInfo> pkInfoList = new LinkedList<PrimaryKeyInfo>();
   private boolean columnsLoaded = false;
   private boolean fullyLoaded = false;
   private String properName = "";
@@ -105,7 +105,7 @@ public class ProcedureInfo
     columnInfoList.add(columnInfo);
   }
 
-  public List getColumns()
+  public List<ProcedureColumnInfo> getColumns()
   {
     return columnInfoList;
   }
@@ -132,7 +132,7 @@ public class ProcedureInfo
     indexInfoList.add(indexInfo);
   }
 
-  public List getIndexes()
+  public List<IndexInfo> getIndexes()
   {
     return indexInfoList;
   }
@@ -142,7 +142,7 @@ public class ProcedureInfo
     pkInfoList.add(pkInfo);
   }
 
-  public List getPrimaryKeys()
+  public List<PrimaryKeyInfo> getPrimaryKeys()
   {
     return pkInfoList;
   }

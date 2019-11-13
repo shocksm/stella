@@ -19,9 +19,9 @@ import org.stellasql.stella.TableInfo;
 import org.stellasql.stella.connection.ConnectionManager;
 import org.stellasql.stella.gui.custom.TableData;
 
-public class ResultData implements TableData
+public class ResultData implements TableData<Object[]>
 {
-  private List objArrayList = new ArrayList();
+  private List<Object[]> objArrayList = new ArrayList<Object[]>();
   private String[] nameArray = null;
   private String query = "";
   private ResultComparator resultComparator = null;
@@ -63,7 +63,7 @@ public class ResultData implements TableData
     return sqlTypeArray[column];
   }
 
-  public TableInfo getTable()
+  public TableInfo getTableInfo()
   {
     return tableInfo;
   }
@@ -155,13 +155,13 @@ public class ResultData implements TableData
   }
 
   @Override
-  public Object getRowObject(int row)
+  public Object[] getRowObject(int row)
   {
     return objArrayList.get(row);
   }
 
   @Override
-  public int getIndexOfRowObject(Object obj)
+  public int getIndexOfRowObject(Object[] obj)
   {
     return objArrayList.indexOf(obj);
   }
@@ -178,7 +178,7 @@ public class ResultData implements TableData
     Collections.sort(objArrayList, resultComparator);
   }
 
-  private class ResultComparator implements Comparator
+  private class ResultComparator implements Comparator<Object[]>
   {
     private int columnIndex = -1;
     private int direction = -1;
@@ -194,10 +194,10 @@ public class ResultData implements TableData
     }
 
     @Override
-    public int compare(Object arg1, Object arg2)
+    public int compare(Object[] arg1, Object[] arg2)
     {
-      Object obj1 = ((Object[])arg1)[columnIndex];
-      Object obj2 = ((Object[])arg2)[columnIndex];
+      Object obj1 = arg1[columnIndex];
+      Object obj2 = arg2[columnIndex];
 
       int val = 0;
 

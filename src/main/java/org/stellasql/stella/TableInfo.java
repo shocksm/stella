@@ -12,8 +12,8 @@ public class TableInfo
   private String catalog = "";
   private String type = "";
   private List<ColumnInfo> columnInfoList = new LinkedList<ColumnInfo>();
-  private List indexInfoList = new LinkedList();
-  private LinkedList pkInfoList = new LinkedList();
+  private List<IndexInfo> indexInfoList = new LinkedList<IndexInfo>();
+  private LinkedList<PrimaryKeyInfo> pkInfoList = new LinkedList<PrimaryKeyInfo>();
   private boolean columnsLoaded = false;
   private boolean fullyLoaded = false;
   private String properName = "";
@@ -105,7 +105,7 @@ public class TableInfo
     columnInfoList.add(columnInfo);
   }
 
-  public List getColumns()
+  public List<ColumnInfo> getColumns()
   {
     return columnInfoList;
   }
@@ -133,13 +133,11 @@ public class TableInfo
   public void setFullyLoaded(boolean loaded)
   {
     fullyLoaded  = loaded;
-
   }
 
   public boolean getFullyLoaded()
   {
     return fullyLoaded;
-
   }
 
   public void addIndex(IndexInfo indexInfo)
@@ -147,7 +145,7 @@ public class TableInfo
     indexInfoList.add(indexInfo);
   }
 
-  public List getIndexes()
+  public List<IndexInfo> getIndexes()
   {
     return indexInfoList;
   }
@@ -157,7 +155,7 @@ public class TableInfo
     pkInfoList.add(pkInfo);
   }
 
-  public List getPrimaryKeys()
+	public List<PrimaryKeyInfo> getPrimaryKeys()
   {
     return pkInfoList;
   }
