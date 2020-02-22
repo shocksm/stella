@@ -171,14 +171,14 @@ public class KeyListener implements Listener
         Stella.getInstance().displayFavorites();
       keyReleased = false;
     }
-    else if (e.keyCode == 'd'
-      && (e.stateMask == SWT.CONTROL))
-    {
-      mapped = true;
-      if (keyReleased)
-        Stella.getInstance().addFavorite();
-      keyReleased = false;
-    }
+//    else if (e.keyCode == 'd'
+//      && (e.stateMask == SWT.CONTROL))
+//    {
+//      mapped = true;
+//      if (keyReleased)
+//        Stella.getInstance().addFavorite();
+//      keyReleased = false;
+//    }
 
 
     return mapped;

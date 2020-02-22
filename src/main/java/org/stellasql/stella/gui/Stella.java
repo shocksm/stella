@@ -35,7 +35,9 @@ public class Stella implements ControlListener, ShellListener
 
   // TODO
   /*
-   * 
+   * files - save, recent, load previous
+   * ctrl D to delete line, ctrl W to close results tab, document all shortcuts,
+   *
    * encrypt passwords - need a key/password - random or user defined?
    *
    * disabled images for toolbar, run button, and tree icons
@@ -470,7 +472,7 @@ public class Stella implements ControlListener, ShellListener
       System.out.println("starting");
       logger.info("starting");
       logger.info("Java Version: " + System.getProperty("java.version"));
-      
+
       display = new Display();
 
       Color color = null;
@@ -503,13 +505,13 @@ public class Stella implements ControlListener, ShellListener
         Monitor[] m = display.getMonitors();
         if (m.length >= 1)
         {
-          
+
           int x = m[0].getBounds().width / 2 - splashShell.getSize().x / 2;
           int y = m[0].getBounds().height / 2 - splashShell.getSize().y / 2;
-  
+
           splashShell.setLocation(x, y);
         }
-        
+
         splashShell.open();
       }
 

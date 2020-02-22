@@ -1,6 +1,7 @@
 package org.stellasql.stella.gui.util;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -96,6 +97,20 @@ public class SqlTextAdditions implements MenuListener, SelectionListener, MouseL
   private void selectAll()
   {
     sqlText.selectAll();
+  }
+
+  private void deleteLine()
+  {
+  	int line = sqlText.getLineAtOffset(sqlText.getCaretOffset());
+  	int lineOffset = sqlText.getOffsetAtLine(line);
+  	int lineLength = sqlText.getLine(sqlText.getLineAtOffset(sqlText.getCaretOffset())).length();
+
+  	sqlText.replaceTextRange(lineOffset, lineLength, "");
+
+  	// delete line break if there is a next line
+  	if (sqlText.getLineCount() > line + 1) {
+  		sqlText.invokeAction(ST.DELETE_NEXT);
+  	}
   }
 
   private void cut()
@@ -310,6 +325,10 @@ public class SqlTextAdditions implements MenuListener, SelectionListener, MouseL
     if (e.keyCode == 'a' && e.stateMask == SWT.CONTROL)
     {
       selectAll();
+    }
+    else if (e.keyCode == 'd' && e.stateMask == SWT.CONTROL)
+    {
+      deleteLine();
     }
     else if (e.keyCode == 'z' && e.stateMask == SWT.CONTROL)
     {

@@ -772,7 +772,9 @@ public class DBObjectTreeComposite extends Composite
 		String text = item.getText();
 		if (item.getData() == TABLE_ITEM) {
 			TableInfo tableInfo = (TableInfo) item.getData(TABLE_DATA_KEY);
-			text = tableInfo.getProperName();
+			// TODO add pref to copy propername (catalog + tablename) as it used to work
+			//text = tableInfo.getProperName();
+			text = tableInfo.getName();
 		}
 		else if (item.getData() == PROCEDURE_COLUMN_ITEM) {
 			ProcedureColumnInfo procColumnInfo = (ProcedureColumnInfo) item.getData(PROCEDURE_COLUMN_DATA_KEY);
@@ -955,7 +957,9 @@ public class DBObjectTreeComposite extends Composite
 
 				if (item.getData() == TABLE_ITEM) {
 					TableInfo tableInfo = (TableInfo) item.getData(TABLE_DATA_KEY);
-					text = tableInfo.getProperName();
+					// TODO add pref to copy propername (catalog + tablename) as it used to work
+					//text = tableInfo.getProperName();
+					text = tableInfo.getName();
 				}
 				else if (item.getData() == PROCEDURE_COLUMN_ITEM) {
 					ProcedureColumnInfo procColumnInfo = (ProcedureColumnInfo) item.getData(PROCEDURE_COLUMN_DATA_KEY);

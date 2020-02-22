@@ -319,8 +319,6 @@ public class QuerySequencer
           String msg = e.getMessage();
 
           if (e.getClass().getName().startsWith("com.ibm.db2")) {
-            // poor sod is using ibm db2, lets have pity on them
-
             // ibm code is disappointing :( so we have to bend over backwards to get a useful error message
             try {
               Method method = e.getClass().getMethod("getSqlca", null);
