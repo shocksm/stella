@@ -269,7 +269,7 @@ public class ConnectionManager
 
     try
     {
-      if (con == null || con.isClosed())
+      if (con == null || con.isClosed() || !con.isValid(2))
       {
         logger.info("Connection was closed. Opening a new connection.");
         open(false);
@@ -346,7 +346,7 @@ public class ConnectionManager
       {}
     }
 
-    if (secondaryCon == null)
+    if (secondaryCon == null || secondaryCon.isClosed() || !secondaryCon.isValid(2))
     {
       logger.debug("secondary connection being created");
       CustomDriverManager driverManager = new CustomDriverManager();
