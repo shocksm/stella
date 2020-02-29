@@ -153,6 +153,11 @@ public class SessionData implements AliasChangeListener
     this.queryComposite = queryComposite;
   }
 
+  public void setResultTabHandler(QueryComposite queryComposite)
+  {
+  	this.queryComposite = queryComposite;
+  }
+
   public void connectionOpened(String warningMessage)
   {
     queryComposite.connectionOpened();
@@ -212,9 +217,9 @@ public class SessionData implements AliasChangeListener
     resultsTab = tabFolder;
   }
 
-  public CTabFolder getResultsTab()
+  public ResultTabHandler getResultTabHandler()
   {
-    return resultsTab;
+    return queryComposite;
   }
 
   public QuerySequencer getQuerySequencer()

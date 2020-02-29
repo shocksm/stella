@@ -147,7 +147,9 @@ public class InsertDialog extends BaseInsertUpdateDialog
   {
     StringBuffer sbuf = new StringBuffer();
     sbuf.append("INSERT INTO ");
-    sbuf.append(tableInfo.getProperName());
+		// TODO add pref to copy propername (catalog + tablename) as it used to work
+    //sbuf.append(tableInfo.getProperName());
+    sbuf.append(tableInfo.getName());
 
     StringBuffer columns = new StringBuffer();
     StringBuffer values = new StringBuffer();

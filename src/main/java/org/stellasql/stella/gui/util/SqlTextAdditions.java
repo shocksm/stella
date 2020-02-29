@@ -105,11 +105,20 @@ public class SqlTextAdditions implements MenuListener, SelectionListener, MouseL
   	int lineOffset = sqlText.getOffsetAtLine(line);
   	int lineLength = sqlText.getLine(sqlText.getLineAtOffset(sqlText.getCaretOffset())).length();
 
-  	sqlText.replaceTextRange(lineOffset, lineLength, "");
 
-  	// delete line break if there is a next line
   	if (sqlText.getLineCount() > line + 1) {
+  		// delete line break since there is a next line
+  		sqlText.setSelectionRange(lineOffset, lineLength + sqlText.getLineDelimiter().length());
   		sqlText.invokeAction(ST.DELETE_NEXT);
+  	}
+  	else if (sqlText.getLineCount() > 1 && sqlText.getLineCount() == line + 1) {
+  		// this is the last line and a line is above so delete the preceding line break
+  		sqlText.setSelectionRange(lineOffset - sqlText.getLineDelimiter().length(), lineLength + sqlText.getLineDelimiter().length());
+  		sqlText.invokeAction(ST.DELETE_NEXT);
+  	}
+  	else {
+  		// this is the only line so just blank out the text
+  		sqlText.replaceTextRange(lineOffset, lineLength, "");
   	}
   }
 

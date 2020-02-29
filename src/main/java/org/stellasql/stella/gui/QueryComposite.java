@@ -40,11 +40,12 @@ import org.stellasql.stella.export.ExportOptions;
 import org.stellasql.stella.gui.util.DraggableTabHelper;
 import org.stellasql.stella.gui.util.FontSetter;
 import org.stellasql.stella.gui.util.StellaImages;
+import org.stellasql.stella.session.ResultTabHandler;
 import org.stellasql.stella.session.SQLResultHandler;
 import org.stellasql.stella.session.SessionData;
 import org.stellasql.stella.session.SessionReadyListener;
 
-public class QueryComposite extends Composite implements SelectionListener, MouseListener, QueryListener, MenuListener, CTabFolder2Listener, DisposeListener, FontChangeListener, SessionReadyListener, SQLResultHandler
+public class QueryComposite extends Composite implements SelectionListener, MouseListener, QueryListener, MenuListener, CTabFolder2Listener, DisposeListener, FontChangeListener, SessionReadyListener, SQLResultHandler, ResultTabHandler
 {
   private static final String STATUS_KEY = "STATUS_KEY";
   private static final String STATUS_RUNNING = "RUNNING";
@@ -157,7 +158,7 @@ public class QueryComposite extends Composite implements SelectionListener, Mous
 
     closeTabMI = new MenuItem(menu, SWT.PUSH);
     closeTabMI.addSelectionListener(this);
-    closeTabMI.setText("&Close Tab");
+    closeTabMI.setText("&Close Tab\tCtrl+W");
 
     closeOtherTabsMI = new MenuItem(menu, SWT.PUSH);
     closeOtherTabsMI.addSelectionListener(this);
@@ -565,15 +566,20 @@ public class QueryComposite extends Composite implements SelectionListener, Mous
 
   protected void closeTab(CTabItem item)
   {
+  	int index = tabFolder.indexOf(item);
     if (item.getControl() != null)
       item.getControl().dispose();
     item.dispose();
+
+  	if (tabFolder.getItemCount() > index) {
+  		tabFolder.setSelection(index);
+  	}
   }
 
   @Override
   public void close(CTabFolderEvent e)
   {
-    tabClosedTime  = e.time;
+    tabClosedTime = e.time;
     closeTab((CTabItem)e.item);
   }
   @Override
@@ -629,5 +635,39 @@ public class QueryComposite extends Composite implements SelectionListener, Mous
 
     return rtc;
   }
+
+	@Override
+	public void closeSelectedTab() {
+		if (tabFolder != null && tabFolder.getSelection() != null) {
+			closeTab(tabFolder.getSelection());
+		}
+	}
+
+	@Override
+	public void selectNextTab() {
+    if (tabFolder != null && tabFolder.getSelection() != null && tabFolder.getItemCount() > 1)
+    {
+      int index = tabFolder.indexOf(tabFolder.getSelection());
+      index++;
+
+      if (index >= tabFolder.getItemCount())
+        index = 0;
+
+      tabFolder.setSelection(index);
+    }
+	}
+
+	@Override
+	public void selectPreviousTab() {
+		if (tabFolder != null && tabFolder.getSelection() != null && tabFolder.getItemCount() > 1) {
+			int index = tabFolder.indexOf(tabFolder.getSelection());
+			index--;
+
+			if (index < 0)
+				index = tabFolder.getItemCount() - 1;
+
+			tabFolder.setSelection(index);
+		}
+	}
 
 }

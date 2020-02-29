@@ -36,7 +36,7 @@ public class Stella implements ControlListener, ShellListener
   // TODO
   /*
    * files - save, recent, load previous
-   * ctrl D to delete line, ctrl W to close results tab, document all shortcuts,
+   * document all shortcuts,
    *
    * encrypt passwords - need a key/password - random or user defined?
    *
