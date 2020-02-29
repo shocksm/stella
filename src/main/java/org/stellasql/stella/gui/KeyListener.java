@@ -113,31 +113,26 @@ public class KeyListener implements Listener
         SessionData.getSessionData(sessionName).getSQLControl().setFocus();
       }
     }
-    else if ((e.keyCode == SWT.PAGE_UP || e.keyCode == SWT.PAGE_DOWN)
-        && (e.stateMask == SWT.CONTROL))
+    else if (e.keyCode == 'w' && e.stateMask == SWT.CONTROL)
     {
       mapped = true;
-      if (tabFolder.getSelection() != null)
-      {
-        String sessionName = (String)tabFolder.getSelection().getData();
-        CTabFolder resultsTabFolder = SessionData.getSessionData(sessionName).getResultsTab();
-        if (resultsTabFolder.getSelection() != null && resultsTabFolder.getItemCount() > 1)
-        {
-          int index = resultsTabFolder.indexOf(resultsTabFolder.getSelection());
-          if (e.keyCode == SWT.PAGE_UP)
-            index++;
-          else
-            index--;
-
-          if (index >= resultsTabFolder.getItemCount())
-            index = 0;
-          if (index < 0)
-            index = resultsTabFolder.getItemCount() - 1;
-
-          resultsTabFolder.setSelection(index);
-        }
+      if (keyReleased) {
+      	if (Stella.getInstance().getSelectedSessionData() != null) {
+      		Stella.getInstance().getSelectedSessionData().getResultTabHandler().closeSelectedTab();
+      	}
       }
+      keyReleased = false;
     }
+    else if (e.keyCode == SWT.PAGE_UP && e.stateMask == SWT.CONTROL)
+		{
+			mapped = true;
+			Stella.getInstance().getSelectedSessionData().getResultTabHandler().selectNextTab();
+		}
+    else if (e.keyCode == SWT.PAGE_DOWN && e.stateMask == SWT.CONTROL)
+		{
+			mapped = true;
+			Stella.getInstance().getSelectedSessionData().getResultTabHandler().selectPreviousTab();
+		}
     else if (e.keyCode == SWT.CR
         && e.stateMask == SWT.CONTROL
         || e.keyCode == SWT.F5)
@@ -171,6 +166,7 @@ public class KeyListener implements Listener
         Stella.getInstance().displayFavorites();
       keyReleased = false;
     }
+
 //    else if (e.keyCode == 'd'
 //      && (e.stateMask == SWT.CONTROL))
 //    {

@@ -189,7 +189,9 @@ public class UpdateDialog extends BaseInsertUpdateDialog implements ModifyListen
   {
     StringBuffer sbuf = new StringBuffer();
     sbuf.append("UPDATE ");
-    sbuf.append(tableInfo.getProperName());
+    // TODO add pref to copy propername (catalog + tablename) as it used to work
+    //sbuf.append(tableInfo.getProperName());
+    sbuf.append(tableInfo.getName());
     sbuf.append("\nSET ");
 
     StringBuffer updates = new StringBuffer();
